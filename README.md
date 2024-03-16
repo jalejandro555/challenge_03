@@ -347,3 +347,49 @@ show_menu(): This function prints the menu to the console. It iterates over the 
 user_order(): This function handles the user's order. It first shows the menu by calling show_menu(). Then it enters a loop where it asks the user to input the number of the menu item they want to order and the quantity. The selected menu item and quantity are added to the order. The loop continues until the user enters 'done', at which point the function returns the order.
 
 The main program: It welcomes the user, calls user_order() to take the user's order, calculates and prints the total bill, applies any discount and prints the discounted total, and thanks the user for dining.
+
+### Create a class diagram with all classes and their relationships. 
+```mermaid
+classDiagram
+    MenuItem <|-- FoodItem
+    FoodItem <|-- Starters
+    FoodItem <|-- Soupes
+    FoodItem <|-- MainCourse
+    FoodItem <|-- Drinks
+    FoodItem <|-- Dessert
+    Order --* MenuItem 
+
+    class MenuItem {
+        +String name
+        +Float price
+        +calculate_total_price(quantity: int): float
+    }
+
+    class FoodItem {
+    
+        +String category
+    }
+
+    class Starters {
+    }
+
+    class Soupes {
+    }
+
+    class MainCourse {
+    }
+
+    class Drinks {
+    }
+
+    class Dessert {
+    }
+
+    class Order {
+        +MenuItem[] items
+        +add_item(item: MenuItem, quantity: int)
+        +calculate_total_price(): float
+        +ask_for_discount(): int
+        +apply_discount(): float
+    }
+```
