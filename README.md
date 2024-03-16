@@ -186,3 +186,164 @@ If the user chooses '3', it asks for the coordinates of a point (top left) and t
 If the user chooses '4', it asks for the coordinates of a point (center) and two dimensions (width and height), and creates a rectangle using this center point and dimensions.
 After creating the rectangle, it prints the area and perimeter of the rectangle by calling the compute_area and compute_perimeter methods of the Rectangle class.
 The if __name__ == "__main__": line checks if this script is being run directly (as opposed to being imported as a module). If it is, it calls the create_rectangle function.
+
+# WELCOME TO THE PYTHON'S PSYCHIATRIC RESTAURANT!
+Restaurant scenario: You want to design a program to calculate the bill for a customer's order in a restaurant.
+Define a base class MenuItem: This class should have attributes like name, price, and a method to calculate the total price.
+```python
+# Define the base class for menu items
+class MenuItem:
+    def __init__(self, name, price):
+        self.name = name
+        self.price = price
+
+    def calculate_total_price(self, quantity):
+        return self.price * quantity
+```
+The base class is MenuItem. This class represents a general item that can be ordered from the menu in a restaurant. It has two attributes: name and price.
+
+__init__(self, name, price): This is the constructor method that's called when you create a new instance of the class. It takes two parameters: name and price. These parameters are used to set the name and price attributes of the MenuItem instance.
+
+calculate_total_price(self, quantity): This method calculates the total price for a given quantity of the menu item. It multiplies the price attribute of the MenuItem instance by the quantity parameter and returns the result.
+
+2. Create subclasses for different types of menu items: Inherit from MenuItem and define properties specific to each type (e.g., Beverage, Appetizer, MainCourse).
+
+```python
+# Define subclasses for different types of menu items
+
+class FoodItem:
+    def __init__(self, name, price, category):
+        self.name = name
+        self.price = price
+        self.category = category
+
+class Starters(FoodItem):
+    def __init__(self, name, price):
+        super().__init__(name, price, "Starters")
+
+class Soupes(FoodItem):
+    def __init__(self, name, price):
+        super().__init__(name, price, "Soupes")
+
+class MainCourse(FoodItem):
+    def __init__(self, name, price):
+        super().__init__(name, price, "Main Course")
+
+class Drinks(FoodItem):
+    def __init__(self, name, price):
+        super().__init__(name, price, "Drinks")
+
+class Dessert(FoodItem):
+    def __init__(self, name, price):
+        super().__init__(name, price, "Dessert")
+```
+### Explamation 
+FoodItem: This is the base class for all items that can be ordered in the restaurant. It has three attributes: name, price, and category.
+
+Starters, Soupes, MainCourse, Drinks, Dessert: These classes inherit from FoodItem. They represent specific types of menu items. Each of these classes calls the FoodItem constructor (super().__init__(name, price, category)) to set the name, price, and category attributes. The category is hard-coded for each class (e.g., "Soupes" for the Soupes class).
+
+3. Define an Order class: This class should have a list of MenuItem objects and methods to add items, calculate the total bill amount, and potentially apply specific discounts based on the order composition.
+```python
+# Define the Order class
+class Order:
+    def __init__(self):
+        self.items = []
+
+    def add_item(self, item, quantity):
+        self.items.append((item, quantity))
+
+    def calculate_total_price(self):
+        total = 0
+        for item, quantity in self.items:
+            total += item.price * quantity
+        return total
+    
+    def ask_for_discount(self):
+        categories = ["programmer", "mentally_ill", "student", "senior_citizen", "veteran", "unemployed", "homeless", "refugee", "disabled"]
+        print("Please enter your population category. if you are not in any of these categories, please press enter")
+        print("Available categories are:")
+        for category in categories:
+            print(category)
+        user_category = input()
+        if user_category in categories:
+            return 10
+        else:
+            print("Sorry, you are not eligible for a discount.")
+            return 0
+
+
+    def apply_discount(self):
+        discount = self.ask_for_discount()
+        total_bill = self.calculate_total_price()
+        return total_bill - (total_bill * discount / 100)
+```
+### Explanation 
+The Order class represents a customer's order in the restaurant. _init__(self): the constructor method initializes an empty list self.items that will hold the items in the order.
+
+add_item(self, item, quantity): This method adds an item to the order. The item is a FoodItem instance, and quantity is the number of that item to add. The item and quantity are stored as a tuple in the self.items list.
+
+calculate_total_price(self): This method calculates the total price of the order by iterating over the items in self.items and adding up the price of each item multiplied by its quantity.
+
+ask_for_discount(self): This method asks the user to input their population category and checks if it's one of the categories that are eligible for a discount. If it is, the method returns a discount of 10%. If it's not, the method prints a message and returns a discount of 0%.
+
+apply_discount(self): This method calls ask_for_discount to get the discount percentage. 
+
+4. Menu for interaction with the user
+```python
+# Create instances of menu items
+menu_items = [
+    Starters("Diazepam, ONLY_FOR_SALE_WITH_PRESCRIPTION", 1.99,),
+    Starters("Xanax, ONLY_FOR_SALE_WITH_PRESCRIPTION", 0.99),
+    Starters("Propanonol, ONLY_FOR_SALE_WITH_PRESCRIPTION", 0.99), 
+    Soupes("Programmer's tears with Mexican tortilla", 5.99),
+    Soupes("Spinach with tomato", 3.99),
+    Soupes("Lentil with bacon", 4.99),
+    MainCourse("Korean boy beef burger", 201.99),
+    MainCourse("Chicken fetus crepe", 122.99),
+    MainCourse("Vegan salad with tuna", 7.99),
+    MainCourse("Turkey pizza", 100),
+    MainCourse("Venezuelan Pasta", 0.99),
+    MainCourse("Fish and Chips with cornflakes", 12.99),
+    Drinks("Fanta", 1.99),
+    Drinks("Taylor Swift's sweat", 900.99),
+    Drinks("Coca Cola", 1.99),
+    Drinks("Pepsi", 1.99),
+    Drinks("Water from arctic glaciers", 300.99),
+    Dessert("Ice cream with an american sausage", 2.99),
+    Dessert("Fruit salad without fruit or transgenic fruit", 2.99),
+    Dessert("Fruit salad with organic fruit", 200.99),
+    Dessert("Snow white apple, REQUIRES_SIGNED_CONSENT", 6.99),
+]
+# User interaction functions
+def show_menu():
+    print("Menu:")
+    for index, item in enumerate(menu_items):
+        print(f"{index + 1}. {item.name} - ${item.price} - Category: {item.category}")
+def user_order():
+    show_menu()
+    order = Order()
+    while True:
+        choice = input("Enter the menu item number (or 'done' to finish): ")
+        if choice.lower() == 'done':
+            break
+        quantity = int(input("Enter the quantity: "))
+        order.add_item(menu_items[int(choice) - 1], quantity)
+    return order
+
+# Main program
+if __name__ == "__main__":
+    print("WELCOME TO THE PYTHON PSYCHIATRIC RESTAURANT!")
+    customer_order = user_order()
+    print(f"Your total bill is: ${customer_order.calculate_total_price():.2f}")
+    print(f"Your total bill after discount is: ${customer_order.apply_discount():.2f}")
+    print("Thank you for dining with us!")
+
+```
+### Explanation 
+menu_items: This is a list of instances of various menu item classes (Starters, Soupes, MainCourse, Drinks, Dessert). Each instance represents a specific menu item, with a name, price, and category.
+
+show_menu(): This function prints the menu to the console. It iterates over the menu_items list and prints the name, price, and category of each item.
+
+user_order(): This function handles the user's order. It first shows the menu by calling show_menu(). Then it enters a loop where it asks the user to input the number of the menu item they want to order and the quantity. The selected menu item and quantity are added to the order. The loop continues until the user enters 'done', at which point the function returns the order.
+
+The main program: It welcomes the user, calls user_order() to take the user's order, calculates and prints the total bill, applies any discount and prints the discounted total, and thanks the user for dining.
