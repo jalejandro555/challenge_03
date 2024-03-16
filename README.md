@@ -1,21 +1,23 @@
-# challenge_03
+# Challenge_03
 ## Class exercise 
+1. Create class Line.
+length, slope, start, end: Instance attributes, two of them being points (so a line is composed at least of two points).
+compute_length(): should return the line´s length
+compute_slope(): should return the slope of the line from the horizontal in deg.
+compute_horizontal_cross(): should return if exists the intersection with x-axis
+compute_vertical_cross(): should return if exists the intersection with y-axis
+
 ```python
 import math
-
 class Point:
     
-    definition: str = "Entidad geométrica abstracta que representa una ubicación en un espacio."
-
     def __init__(self, x: float=0, y: float=0):
         self.x = x 
         self.y = y  
 
-    
     def move(self, new_x: float, new_y: float):
         self.x = new_x
         self.y = new_y
-
     
     def reset(self):
         self.x = 0
@@ -47,7 +49,14 @@ class Line:
         if (end.x * start.x) <= 0: 
             return True
         else: 
-            return False 
+            return False
+```
+## Explanation
+The code begins by importing the math module, which provides mathematical functions defined by the C standard. Then, a Point class is defined to represent a point in a 2D space with x and y coordinates. The Point class has an __init__ method to initialize a point, a move method to change the coordinates of the point, and a reset method to set the coordinates back to the origin (0, 0). After the Point class, a Line class is defined to represent a line segment in a 2D space. The Line class has an __init__ method that initializes a line with a start point and an end point, and also calculates the length and slope of the line. The Line class also has methods to calculate the length of the line, compute the distance between the start and end points, compute the slope of the line in degrees, and check if the line crosses the horizontal or vertical axis.
+
+2. Redefine the class Rectangle, adding a new method of initialization using 4 Lines (composition at its best, a rectangle is compose of 4 lines).
+```python
+##
 class Rectangle:
     def __init__(self, method, *args):
       
@@ -63,6 +72,8 @@ class Rectangle:
             raise ValueError("Método de inicialización no reconocido.")
 
     def init_from_points(self, top_left, bottom_right):
+        if not (top_left.x < bottom_right.x and top_left.y > bottom_right.y): #A rectangle is valid if the top left point is above and to the left of the bottom right point.
+            raise ValueError("The provided points cannot form a valid rectangle.")
         self.top_left = top_left
         self.bottom_right = bottom_right
         self.top_right = Point(bottom_right.x, top_left.y)
@@ -71,6 +82,8 @@ class Rectangle:
                       Line(self.bottom_right, self.bottom_left), Line(self.bottom_left, self.top_left)]
 
     def init_from_lines(self, top_line, bottom_line, left_line, right_line):
+        if not (top_line.start.x < top_line.end.x and left_line.start.y > left_line.end.y): #A rectangle is valid if the top line is horizontal and the left line is vertical.
+            raise ValueError("The provided lines cannot form a valid rectangle.")
         self.lines = [top_line, bottom_line, left_line, right_line]
         self.top_left = top_line.start
         self.bottom_right = bottom_line.end
@@ -78,11 +91,15 @@ class Rectangle:
         self.bottom_left = left_line.start
 
     def init_from_point_and_dimensions(self, top_left, width, height):
+        if not (width > 0 and height > 0): #A rectangle is valid if both the width and height are greater than zero.
+            raise ValueError("The provided dimensions cannot form a valid rectangle.")
         self.top_left = top_left
         self.bottom_right = Point(top_left.x + width, top_left.y - height)
         self.init_from_points(self.top_left, self.bottom_right)
 
     def init_from_center_and_dimensions(self, center, width, height):
+        if not (width > 0 and height > 0): #A rectangle is valid if both the width and height are greater than zero.
+            raise ValueError("The provided dimensions cannot form a valid rectangle.")
         half_width = width / 2
         half_height = height / 2
         top_left = Point(center.x - half_width, center.y + half_height)
@@ -159,3 +176,13 @@ def create_rectangle():
 if __name__ == "__main__":
     create_rectangle()
 ```
+## Explanation 
+The Rectangle class is defined to represent a rectangle in a 2D space. It has several methods to initialize a rectangle from different types of input: init_from_points, init_from_lines, init_from_point_and_dimensions, and init_from_center_and_dimensions. Each of these methods sets the four corners of the rectangle and the four lines that form the rectangle. The Rectangle class also has a compute_area method to calculate the area of the rectangle, a compute_perimeter method to calculate the perimeter.
+
+The create_rectangle function is a user-interactive function that creates a Rectangle object based on user input. It first prompts the user to choose a method for creating a rectangle. Depending on the user's choice, it then asks for further inputs:
+If the user chooses '1', it asks for the coordinates of two points (top left and bottom right), and creates a rectangle using these points.
+If the user chooses '2', it asks for the coordinates of four lines (top, bottom, left, right), and creates a rectangle using these lines.
+If the user chooses '3', it asks for the coordinates of a point (top left) and two dimensions (width and height), and creates a rectangle using this point and dimensions.
+If the user chooses '4', it asks for the coordinates of a point (center) and two dimensions (width and height), and creates a rectangle using this center point and dimensions.
+After creating the rectangle, it prints the area and perimeter of the rectangle by calling the compute_area and compute_perimeter methods of the Rectangle class.
+The if __name__ == "__main__": line checks if this script is being run directly (as opposed to being imported as a module). If it is, it calls the create_rectangle function.
